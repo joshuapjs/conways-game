@@ -1,0 +1,202 @@
+\documentclass[]{article}
+
+\usepackage{hyperref}
+\usepackage{amsmath}
+
+\title{HPCA-PC Exercise Sheet 1 --- Group 1}
+\author{
+	Mariia Isaeva\\
+	\texttt{7910764}	\\
+	\href{mailto:s6047802@stud.uni-frankfurt.de}{s6047802@stud.uni-frankfurt.de}
+	\and
+	Luiz Augusto da Silva Feitosa	\\
+	\texttt{7890756}	\\
+	\href{mailto:s1506025@stud.uni-frankfurt.de}{s1506025@stud.uni-frankfurt.de}
+	\and
+	Joshua Spingler\\
+	\texttt{8243375}	\\
+	\href{mailto:s7457265@stud.uni-frankfurt.de}{s7457265@stud.uni-frankfurt.de}
+	\and
+	Tim Wolf\\
+	\texttt{7416419}	\\
+	\href{mailto:s9677570@stud.uni-frankfurt.de}{s9677570@stud.uni-frankfurt.de}
+}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Exercise 1.1: Hello World? Hello World!}
+
+
+\section*{Exercise 1.2: Conditional Statements and Loops}
+
+
+\section*{Exercise 1.3: Troubleshooting}
+	\subsection*{i) Factorials}
+	In the initial code, there was an initialization of \texttt{int a[n];} with in the \\ \texttt{GetFactorials} function. The pointer to this array \texttt{a} was returned after calculation of the factorials (effectively after its initialization). Within the \texttt{main} function, \texttt{GetFactorials} is called in the statement \texttt{int* a = GetFactorials(n);}. After that there is an attempt to access elements by index, through the statement \texttt{a[i]}. The application will not run successfully, because the scope of the array \texttt{a} is limited to the function \texttt{GetFactorials}, which in turn binds its lifetime to the call of \texttt{GetFactorials}. In other words, \texttt{a} is allocated on the stack and \texttt{GetFactorials} returns a pointer to an object that is removed right after termination of the function. The solution is thereby, to allocate memory on the heap by calling \texttt{int* a = new int[n]} instead. After doing that the statement in line 23, where we try to delete \texttt{a} on the heap, becomes legal as well, because we attempt to free heap memory by calling \texttt{delete[] a} (as we were never able to actually access the array, the application never reached this equally problematic statement, assuming the initial setup with the declaration on the stack).
+	\subsection*{ii) Pointers and Functions}
+	There are two different issues in \texttt{main} and in \texttt{piPointer2}.\\
+
+	In \texttt{piPointer2} we approach the same issue as in \textbf{i)}. Thus, I would refer to the explanation there. There is (again) a pointer to a locally initialized variable returned (the array in \textbf{i)} was initialized because of the loop).\\
+
+		The issue in \texttt{main} is, that the statement \texttt{float* pi1;} alone, will declare a new pointer, but not initialize it. If we try to dereference a pointer that is uninitialized (so only declared) we will run into undefined behavior (UB), leading to an unsuccessfull termination of the application after the statement \texttt{*pi = 3.14;} within \texttt{piPointer1}.
+
+	\subsection*{iii) Function Arguments}
+The output after changing the code is the following:\\
+
+\noindent\texttt{Number is: 0}\\
+  \texttt{Number is: 0}\\
+  \texttt{Number is: 1}\\
+  \texttt{Number is: 1}\\
+  \texttt{Number is: 2}\\
+
+	In \texttt{number\_increment} the increase is applied to a copy of \texttt{arg}, thats why it has no effect on the variable \texttt{number} in \texttt{main}. In \texttt{copy\_increment}, the increment is returned and therefore passed by \texttt{copy\_increment} into the scope of \texttt{main} (we reassign \texttt{number} with the increased \texttt{arg} that \texttt{copy\_increment} returns). In \texttt{pointer\_increment}, we increment the pointer, that was passed-by-value. This leaves \texttt{number} unchanged because we work on a copy of the pointer to \texttt{number}, increase it and then do nothing with it. In \texttt{reference\_increment} as pass-by-reference give us direct access to \texttt{number} from \texttt{main} within \texttt{reference\_number}, thus an increase actually changes the value of \texttt{number}.
+	\subsection*{iv) Templates}
+	Executing the program will give us the following output:\\
+
+	\noindent\texttt{int: 6}\\
+	\texttt{double: 2e+09}\\
+	\texttt{float: 2e+09}\\
+	\texttt{int: 2000000000}\\
+	\texttt{short: 9}\\
+	\texttt{char:}\\
+
+	The output for \texttt{int:} is expected because 6 is greater than 5. The second output for \texttt{double:} and \texttt{float:} is expected as well because \texttt{double}, \texttt{float} and \texttt{int} can contain values higher than 2e+9. The value for \texttt{short} on the other hand is unexpected. The reason for that is a \texttt{short} (on g++) can only hold values lower or equal than 32767 and higher or equal than -32768. Therefore casting 2e+9 to a short will result in a buffer overflow and thereby typically in a negative number, depending on how a bufferoverflows are handled by the compiler. Therefore \texttt{short:} will determine that 9 is the higher value. The same happens if you use a \texttt{char}, with the difference that \texttt{char} elements even have a lower upper-bound than a \texttt{short}. \texttt{char} will therefore receive 9 as maximum value and give us the ASCII representation of 9, which is a horizontal tab.
+	
+	
+\section*{Exercise 1.4: I Also Like to Live Dangerously}
+	The expected output would be some kind of \textit{index error}, since we are trying to assign values to indexes that exceed the size of the list. However, the output is two lists and two messages. The first list has ten elements with the same values as their indexes, i.e., from 0 to 9. The second list is identical to the first except for index 3, which has the value 1015. After the output of the lists, there are also two messages: \textit{double free or corruption (out)} and \textit{Aborted (core dumped)}. The problematic section of the code is in lines 15, 16, and 17. These lines present \textit{out-of-bounds access}, undefined behavior (and therefore unpredictable) in C++.	
+	\\~\\
+	\texttt{p1} and \texttt{p2} are created using \textit{dynamic memory allocation} and are therefore located in the \textit{heap}. Depending on the heap allocator, the lists may be contiguous or separated from each other. Each list also has 8 or 16 bytes before index 0, depending on the implementation, of \textit{metadata} containing information about the list: track allocation size, detect double free, and so on. 
+	\\~\\
+	Let's now analyze how lines 15, 16, and 17 are unsafe in C++:
+	\begin{itemize}
+		\item Line 15: \texttt{p1[11] = 0111;}	\\
+		This line assigns $111_{(8)} = 73_{(10)}$ to \texttt{p[11]}. This command is not safe, as it might corrupt the metadata from \texttt{p2}. The compiler does not report any errors, and it does not visibly affect the output. This behavior is dangerous because we may think that nothing happened.
+		\item Line 16: \texttt{p1[15] = 1015;}	\\
+	There are 16 bytes between the two lists, which would correspond to \texttt{p1[10]} and \texttt{p1[11]}. Therefore \texttt{p1[15]} and \texttt{p2[3]} point to the same memory location. This is unsafe, as the assignment corrupts the contents of the other list and the compiler does not report any error.
+		\item Line 17: \texttt{p2[13] = 2013;}	\\
+		This location is beyond the two lists. This assignment may alter unused memory or corrupt other data.
+	\end{itemize}
+	Since the metadata might be damaged, the deallocation \texttt{delete[]} cannot work properly. The program terminates with \textit{double free or corruption (out)} to prevent further damage. If we comment out lines 15 and 17, the compiler does not generate errors, as critical metadata may not have been affected. This does not mean that it is safe, as such an assignment may corrupt sensitive data, depending on how the heap allocator works on a particular system.
+	
+
+
+
+\section*{Exercise 1.5: Fun with Pointers}
+	\subsection*{i) Memory Locations}
+	
+	The first loop prints each array element together with its address using \verb|&arr[idx]|. Since the array \verb|arr| is stored contiguously in memory, the addresses of adjacent elements differ by the size of one \verb|int| (typically 4 bytes). For example, if the first element is located at \verb|0x7ffea62543d0|, the next element is at \verb|0x7ffea62543d4|, and so on.
+	
+	In the second loop, a pointer \verb|ptr| is used to traverse the array. The expression \verb|ptr| shows the address of the element currently pointed to, while \verb|*ptr| dereferences it to obtain its value. The address of the pointer variable itself (\verb|&ptr|) remains constant, as it is stored once on the stack while its value changes each iteration.
+	
+	\begin{center}
+		\begin{tabular}{ll}
+			\textbf{Expression} & \textbf{Meaning} \\
+			\hline
+			\verb|arr[idx]| & Array element \\
+			\verb|&arr[idx]| & Address of each array element \\
+			\verb|ptr| & Pointer’s current target address \\
+			\verb|&ptr| & Address of the pointer variable \\
+		\end{tabular}
+	\end{center}
+	
+	\subsection*{ii) Size of Arrays}
+	
+	The size is computed as:
+	\[
+	\text{size} = \frac{\text{sizeof(arr)}}{\text{sizeof(arr[0])}}
+	\]
+	Here, \verb|sizeof(arr)| gives the total memory occupied by the array, and \verb|sizeof(arr[0])| gives the size of one element. For a static array of six \verb|int| elements (4 bytes each), this equals \verb|24 / 4 = 6|.
+	
+	This approach fails for dynamically allocated arrays or arrays that have decayed into pointers, since \verb|sizeof| then returns the size of the pointer itself, not the total array memory.
+
+
+	
+	
+\section*{Exercise 1.6: The Power of References}
+The runtime could be reduced by declaring that the argument in \texttt{CalculatedSum} shall be passed-by-reference instead of passed-by-value. As the function is essentially the so called hotpath because its the main piece of code that is executed repeatedly, changing from pass-by-value to pass-by-reference makes a big difference because we avoid copying the \texttt{vector} values and deleting the copy. Possibilities where pass-by-value could be desireable is in concurrent programs because letting each \texttt{threat} work on its own copy of the data ereases the need to care about synchronisation. Another way this can be achieved is working on a \texttt{vector} pointer instead of a \texttt{vector} reference (might be less safe though).
+
+\section*{Exercise 1.7: Debugger}
+	\subsection*{i) Write a How-to Guide}
+
+	 \section{Compiling with Debugging Flags}
+
+\textbf{Main debugging flag:} Use \texttt{-g} when compiling to include debugging information.
+
+\textbf{Example:}
+
+\texttt{g++ -g hello.cpp -o hello}
+
+
+\section{Starting GDB}
+
+\textbf{Launch GDB:}
+
+\texttt{gdb ./myprogram}
+
+\textbf{Alternative method:}
+
+\texttt{gdb --args ./myprogram arg1 arg2}
+
+
+To run the program inside GDB: type \texttt{run} or \texttt{r}
+
+Exit GDB anytime with \texttt{quit} or \texttt{q}
+
+\section{Working with Breakpoints}
+
+\subsection{Setting breakpoints}
+
+
+     At a specific line: \texttt{break filename.cpp:lineNumber} or \texttt{b filename.cpp:lineNumber}
+     
+     At a function: \texttt{break functionName} or \texttt{b functionName}
+
+
+\subsection{Managing breakpoints}
+
+
+    List all breakpoints: \texttt{info breakpoints} or \texttt{info break}
+    
+    Delete a breakpoint: \texttt{delete breakpoint\_number} or 
+    \texttt{d breakpoint\_number}
+
+
+\section{Basic Debugging Commands}
+
+
+     Continue execution until next breakpoint: \texttt{continue} or \texttt{c}
+     
+     Print variable value: \texttt{print variable\_name} or \texttt{p variable\_name}
+
+     Display variable value (updates automatically): \texttt{display variable\_name}
+     
+     View the call stack: \texttt{backtrace} or \texttt{bt}
+
+
+	\subsection*{ii) Run the Debugger}
+
+	\begin{enumerate}
+    \item I would expect the program to compile, but when executed, it would likely crash or produce some undefined behavior because it tries to access array elements outside the bounds (\texttt{p1[15]}, when the arrays only have indices from 0 to 9).
+    
+    \item In my case \texttt{p1[15]} is overlapping with other indices of \texttt{p2} such as p2[3]. I assume there is a gap between these arrays and when someone tries to access elements out of bounds of array either nothing happens while printing elements out or the old elements could be overwritten.
+    
+    \item Since the code is accessing memory that doesn't belong to these arrays, the program might:
+    
+         Crash, or
+         
+         Overwrite memory, or
+         
+         Show not expectable values for those out-of-bounds indices, or
+         
+        In some cases work normally despite the error
+        
+\end{enumerate}
+
+	
+
+
+\end{document}
