@@ -42,8 +42,9 @@ int World::countLiveNeighbors(int r, int c) const {
 }
 
 void World::set(int height, int width, bool alive) {
-    if (height >= 0 && height < rows && width >= 0 && width < cols)
-        grids[currentGridIndex][height][width] = alive;
+    height = height < 0 ? rows - (height % rows) : height % rows;
+    width = width < 0 ? cols - (width % cols) : width % cols;
+    grids[currentGridIndex][height][width] = alive;
 }
 
 void World::copyGrid(bool** dest, bool** src) const {
