@@ -1,7 +1,8 @@
-# include <iostream>
-# include "Cli.h"
+#include <iostream>
 
-int main(int argc, char* argv[]) { 
-    Cli cli = Cli();
-    cli.start();
+#include "Cli.h"
+
+int main(int argc, char* argv[]) {
+  Cli cli = Cli();
+  cli.start();
 }
