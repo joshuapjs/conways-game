@@ -2,6 +2,8 @@
 #include <iostream>
 #include <fstream>
 
+#include <filesystem>
+
 void World::allocateGrids() {
     for (auto & grid : grids) {
         grid = new bool*[rows];
@@ -96,6 +98,7 @@ void World::print() const {
 }
 
 bool World::load(const std::string& path) {
+    std::cout << "CWD: " << std::filesystem::current_path() << '\n';
     std::ifstream file(path);
     if (!file.is_open()) return false;
 
@@ -138,3 +141,6 @@ bool World::save(const std::string& path) const {
 
     return true;
 }
+
+int World::getRows() { return rows; }
+int World::getCols() { return cols; }

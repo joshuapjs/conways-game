@@ -27,6 +27,9 @@ public:
 
     bool load(const std::string& path);
     bool save(const std::string& path) const;
+
+    int getRows();
+    int getCols();
 };
 
 #endif // GAME_OF_LIFE_H
