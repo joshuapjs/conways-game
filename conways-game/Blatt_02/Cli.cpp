@@ -13,7 +13,6 @@ void Cli::start() {
     // quit the application
     if (std::regex_match(input, std::regex(R"(\s*quit\s*)")) ||
         std::regex_match(input, std::regex(R"(\s*q\s*)")) ||
-        std::regex_match(input, std::regex(R"(\s*quit\s*)")) ||
         std::regex_match(input, std::regex(R"(\s*exit\s*)")) ||
         std::regex_match(input, std::regex(R"(\s*logout\s*)")) ||
         std::regex_match(input, std::regex(R"(\s*:q\s*)"))) {
@@ -27,20 +26,20 @@ void Cli::start() {
       std::smatch match;
 
       if (std::regex_match(input, match, command_create_regex)) {
-        size_t first_int = std::stoul(match[1]);
-        size_t second_int = std::stoul(match[2]);
+        size_t width = std::stoul(match[1]);
+        size_t height = std::stoul(match[2]);
 
-        std::cout << "First integer: " << first_int << "\n";
-        std::cout << "Second integer: " << second_int << std::endl;
+        std::cout << "width: " << width << "\n";
+        std::cout << "height: " << height << std::endl;
         input = "";
         std::cout << "CGOL> ";
       }
       // load <some UNIX path>
     } else if (std::regex_match(input, std::regex(R"(\s*load\s+.+\s*)"))) {
-      std::regex windows_load_regex(R"(\s*load\s+([^\\]+)\s*)");
+      std::regex unix_path_regex(R"(\s*load\s+([^\\]+)\s*)");
       std::smatch match;
 
-      if (std::regex_match(input, match, windows_load_regex)) {
+      if (std::regex_match(input, match, unix_path_regex)) {
         std::string path = match[1];
 
         std::cout << "Following path for loading was specified: " << path
@@ -54,10 +53,10 @@ void Cli::start() {
       }
       // save <some UNIX path>
     } else if (std::regex_match(input, std::regex(R"(\s*save\s+.+\s*)"))) {
-      std::regex command_save_regex(R"(\s*save\s+([^\\]+)\s*)");
+      std::regex unix_path_regex(R"(\s*save\s+([^\\]+)\s*)");
       std::smatch match;
 
-      if (std::regex_match(input, match, command_save_regex)) {
+      if (std::regex_match(input, match, unix_path_regex)) {
         std::string path = match[1];
 
         std::cout << "Following path for saving was specified: " << path
@@ -81,10 +80,10 @@ void Cli::start() {
       std::cout << "CGOL> ";
       // Enable print
     } else if (std::regex_match(input, std::regex(R"(\s*print\s+[01]\s*)"))) {
-      std::regex command_print(std::regex(R"(\s*print\s+([01])\s*)"));
+      std::regex command_print_regex(std::regex(R"(\s*print\s+([01])\s*)"));
       std::smatch match;
 
-      if (std::regex_match(input, match, command_print)) {
+      if (std::regex_match(input, match, command_print_regex)) {
         printOn = std::stoi(match[1]);
         std::cout << printOn << std::endl;
         input = "";
