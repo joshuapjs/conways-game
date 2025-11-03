@@ -1,5 +1,7 @@
 #include <iostream>
+
 #include "World.h"
+#include "Cli.h"
 
 int main() {
     World world(5, 5);
@@ -28,6 +30,9 @@ int main() {
         std::cerr << "Failed to save to file.\n";
         return 1;
     }
+    
+    Cli cli{};
+    cli.start();
 
     return 0;
 }

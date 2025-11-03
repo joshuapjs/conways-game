@@ -3,6 +3,7 @@
 
 class Cli {
 
+    bool printOn;
     public:
     void start();
 
