@@ -78,7 +78,7 @@ void Cli::start() {
     } else if (std::regex_match(
                    input, std::regex(R"(\s*toad\s+[0-9]+\s+[0-9]+\s*)"))) {
       addToad(input);
-      // Beacon pattern
+      // Add Beacon pattern
     } else if (std::regex_match(
                    input, std::regex(R"(\s*beacon\s+[0-9]+\s+[0-9]+\s*)"))) {
       addBeacon(input);
@@ -86,7 +86,6 @@ void Cli::start() {
     } else if (std::regex_match(
                    input, std::regex(R"(\s*methuselah\s+[0-9]+\s+[0-9]+\s*)"))) {
       addMethuselah(input);
-    }
       // Base case for handling invalid commands.
     } else {
       std::cout << "\nNot sure what you mean by " << "'" << input << "'"
@@ -94,7 +93,7 @@ void Cli::start() {
                 << std::endl;
       input = "";
       std::cout << "CGOL> ";
-    };
+    }
   }
 }
 
