@@ -89,6 +89,11 @@ void Cli::start() {
     } else if (std::regex_match(
                    input, std::regex(R"(\s*methuselah\s+[0-9]+\s+[0-9]+\s*)"))) {
       addMethuselah(input);
+
+      // Add Random patterns
+    } else if (std::regex_match(
+                    input, std::regex(R"(\s*random\s+[0-9]+\s*)"))) {
+      addRandom(input);
       // Base case for handling invalid commands.
     } else {
       std::cout << "\nNot sure what you mean by " << "'" << input << "'"
@@ -195,6 +200,75 @@ void Cli::addMethuselah(std::string& input) {
       world->set(x + 1, y + 1, true);
       world->set(x + 2, y + 1, true);
       std::cout << "Methuselah added at (" << x << ", " << y << ")" << std::endl;
+    }
+    input = "";
+    std::cout << "CGOL> ";
+  }
+}
+
+void Cli::addRandom(std::string& input) {
+  const std::regex command_random(R"(\s*random\s+([0-9]+)\s*)");
+  std::smatch match;
+
+  if (std::regex_match(input, match, command_random)) {
+    int count = std::stoi(match[1]);
+
+    if (!world) {
+      std::cout << "Error: No world created. Use 'create' or 'load' first."
+                << std::endl;
+    } else {
+      std::random_device rd;
+      std::mt19937 gen(rd());
+
+      //
+      int width = world->getCols();
+      int height = world->getRows();
+
+      //
+      std::uniform_int_distribution<> pattern_dist(0, 3);
+      std::uniform_int_distribution<> x_dist(0, width - 4);
+      std::uniform_int_distribution<> y_dist(0, height - 4);
+
+      for (int i = 0; i < count; ++i) {
+        int pattern = pattern_dist(gen);
+        int x = x_dist(gen);
+        int y = y_dist(gen);
+
+        // Pattern-Logik
+        switch (pattern) {
+          case 0: // Glider
+            world->set(x, y + 1, true);
+            world->set(x + 1, y + 2, true);
+            world->set(x + 2, y, true);
+            world->set(x + 2, y + 1, true);
+            world->set(x + 2, y + 2, true);
+            break;
+          case 1: // Toad
+            world->set(x, y + 1, true);
+            world->set(x, y + 2, true);
+            world->set(x, y + 3, true);
+            world->set(x + 1, y, true);
+            world->set(x + 1, y + 1, true);
+            world->set(x + 1, y + 2, true);
+            break;
+          case 2: // Beacon
+            world->set(x, y, true);
+            world->set(x + 1, y, true);
+            world->set(x, y + 1, true);
+            world->set(x + 3, y + 2, true);
+            world->set(x + 2, y + 3, true);
+            world->set(x + 3, y + 3, true);
+            break;
+          case 3: // Methuselah
+            world->set(x, y + 1, true);
+            world->set(x, y + 2, true);
+            world->set(x + 1, y, true);
+            world->set(x + 1, y + 1, true);
+            world->set(x + 2, y + 1, true);
+            break;
+        }
+      }
+      std::cout << "Added " << count << " random patterns to the world" << std::endl;
     }
     input = "";
     std::cout << "CGOL> ";
