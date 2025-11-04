@@ -1,7 +1,39 @@
+#include <iostream>
+
+#include "World.h"
 #include "Cli.h"
 
 int main() {
-    Cli cli;
+    World world(5, 5);
+
+    if (!world.load("../p67_snark_loop.txt")) {
+        std::cerr << "Failed to load from file.\n";
+        return 1;
+    }
+
+    world.print();
+    std::cout << '\n';
+
+    for (int i = 0; i < 100; ++i) {
+        world.evolve();
+        std::cout << "Generation " << i + 1 << ":\n";
+        //world.print();
+        std::cout << '\n';
+
+        if (world.isStable()) {
+            std::cout << "Stabilized at generation " << i + 1 << ".\n";
+            break;
+        }
+    }
+
+    if (!world.save("output.txt")) {
+        std::cerr << "Failed to save to file.\n";
+        return 1;
+    }
+    
+    Cli cli{};
     cli.start();
+
     return 0;
 }
+
