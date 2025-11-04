@@ -22,6 +22,7 @@ private:
     void delay(std::string& input);
     void print(std::string& input);
     void help(std::string& input);
+    void examples(std::string& input);
 
     void addBeacon(std::string& input);
     void addToad(std::string& input);

@@ -38,9 +38,12 @@ void Cli::start() {
       // save <some UNIX path>
     } else if (std::regex_match(input, std::regex(R"(\s*save\s+.+\s*)"))) {
       save(input);
-      // help - an overview over all possible commands.
+      // help - command overview
     } else if (std::regex_match(input, std::regex(R"(\s*help\s*|\s*h\s*)"))) {
       help(input);
+      // examples - usage examples
+    } else if (std::regex_match(input, std::regex(R"(\s*example[s]?\s*|\s*ex\s*)"))) {
+      examples(input);
       // Enable print
     } else if (std::regex_match(input, std::regex(R"(\s*print\s+[01]\s*)"))) {
       print(input);
@@ -366,19 +369,89 @@ void Cli::print(std::string& input) {
 }
 
 void Cli::help(std::string& input) {
-  std::cout << "The following commands are available:\n\ncreate "
-               "<x-length> <y-length>\nload "
-               "<some UNIX path>\nsave <some UNIX path>\nprint <1 "
-               "(enable) | 0 (disable)>\ndelay <time in ms>\nstability <1 "
-               "(enable) | 0 (disable)>\nrun <n generations>\nset <x-index> "
-               "<y-index> <0 "
-               "(alive) | 1 (dead)>\nset <position> <0 | 1>\nget <x-index> "
-               "<y-index>\nget <position>\n"
-               "glider <x> <y>\ntoad <x> <y>\nbeacon <x> <y>\n"
-            << std::endl;
+  std::cout << "\n" << std::string(50, '=') << "\n";
+  std::cout << "           COMMAND REFERENCE\n";
+  std::cout << std::string(50, '=') << "\n\n";
+
+  std::cout << "WORLD MANAGEMENT:\n";
+  std::cout << "  create <width> <height>    Create new world\n";
+  std::cout << "  load <unix-path>           Load world from file\n";
+  std::cout << "  save <unix-path>           Save world to file\n\n";
+
+  std::cout << "SIMULATION CONTROL:\n";
+  std::cout << "  run <generations>          Run simulation\n";
+  std::cout << "  print <0|1>                Toggle live display\n";
+  std::cout << "  delay <milliseconds>       Delay between generations\n";
+  std::cout << "  stability <0|1>            Auto-stop when stable\n\n";
+
+  std::cout << "CELL OPERATIONS:\n";
+  std::cout << "  set <x> <y> <0|1>          Set cell state\n";
+  std::cout << "  set <position> <0|1>       Set cell by 1D index\n";
+  std::cout << "  get <x> <y>                Get cell state\n";
+  std::cout << "  get <position>             Get cell by 1D index\n\n";
+
+  std::cout << "PATTERNS:\n";
+  std::cout << "  glider <x> <y>             Add glider pattern\n";
+  std::cout << "  toad <x> <y>               Add toad pattern\n";
+  std::cout << "  beacon <x> <y>             Add beacon pattern\n";
+  std::cout << "  methuselah <x> <y>         Add methuselah pattern\n";
+  std::cout << "  random <count>             Add random patterns\n\n";
+
+  std::cout << "APPLICATION:\n";
+  std::cout << "  help, h                    Command reference\n";
+  std::cout << "  example, ex                Usage examples\n";
+  std::cout << "  quit, q, exit, :q          Exit program\n";
+
+  std::cout << std::string(50, '=') << "\n" << std::endl;
+
   input = "";
   std::cout << "CGOL> ";
-  // Enable print
+}
+
+void Cli::examples(std::string& input) {
+  std::cout << "\n" << std::string(50, '=') << "\n";
+  std::cout << "           USAGE EXAMPLES\n";
+  std::cout << std::string(50, '=') << "\n\n";
+
+  std::cout << "EXAMPLE 1: Basic simulation with visualization\n";
+  std::cout << "  create 30 30       # Create 30x30 world\n";
+  std::cout << "  glider 5 5         # Add a glider\n";
+  std::cout << "  toad 15 10         # Add a toad oscillator\n";
+  std::cout << "  print 1            # Enable live display\n";
+  std::cout << "  delay 100          # 100ms between frames\n";
+  std::cout << "  run 50             # Run 50 generations\n\n";
+
+  std::cout << "EXAMPLE 2: Fast simulation with stability check\n";
+  std::cout << "  create 40 40\n";
+  std::cout << "  random 8           # Add 8 random patterns\n";
+  std::cout << "  print 0            # Disable display for speed\n";
+  std::cout << "  stability 1        # Stop when world becomes stable\n";
+  std::cout << "  run 1000           # Run up to 1000 generations\n\n";
+
+  std::cout << "EXAMPLE 3: Manual cell creation\n";
+  std::cout << "  create 20 20\n";
+  std::cout << "  set 5 5 1          # Create custom pattern\n";
+  std::cout << "  set 6 6 1\n";
+  std::cout << "  set 7 5 1\n";
+  std::cout << "  set 7 6 1\n";
+  std::cout << "  set 7 7 1\n";
+  std::cout << "  print 1\n";
+  std::cout << "  run 20\n\n";
+
+  std::cout << "EXAMPLE 4: Save and load workflow\n";
+  std::cout << "  create 25 25\n";
+  std::cout << "  glider 0 0\n";
+  std::cout << "  beacon 10 10\n";
+  std::cout << "  save my_pattern.txt\n";
+  std::cout << "  # ... later ...\n";
+  std::cout << "  load my_pattern.txt\n";
+  std::cout << "  run 100\n\n";
+
+  std::cout << "Type 'help' for complete command reference.\n";
+  std::cout << std::string(50, '=') << "\n" << std::endl;
+
+  input = "";
+  std::cout << "CGOL> ";
 }
 
 void Cli::save(std::string& input) {
