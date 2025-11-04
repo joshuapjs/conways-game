@@ -35,77 +35,101 @@
 	\subsubsection*{Starting cell of multi-cell figures at the grid position (x,y)}
 	All multi-cell patterns use the top-left corner as their anchor point $(x,y)$, marked with a red X in the diagrams below. When placing patterns using commands like \texttt{glider 5 5}, the pattern is positioned such that its top-left cell aligns with grid coordinates $(5,5)$. The toroidal grid behavior ensures that patterns wrap around the world boundaries. For example, placing a \textit{glider} at $(width-1, height-1)$ will cause parts of the pattern to appear at the opposite edges of the grid.
 
-\begin{center}
-	% Glider
-	\begin{minipage}{0.32\textwidth}
-		\centering
-		\begin{tikzpicture}
-			\foreach \y in {0,...,3} {
-				\foreach \x in {0,...,3} {
-					\node[draw, minimum size=1cm] at (\x,-\y) {};
+	\begin{center}
+		% Glider
+		\begin{minipage}{0.32\textwidth}
+			\centering
+			\begin{tikzpicture}
+				\foreach \y in {0,...,3} {
+					\foreach \x in {0,...,3} {
+						\node[draw, minimum size=1cm] at (\x,-\y) {};
+					}
 				}
-			}
-			\node[draw, minimum size=1cm, fill=black] at (1,0) {};
-			\node[draw, minimum size=1cm, fill=black] at (2,-1) {};
-			\node[draw, minimum size=1cm, fill=black] at (0,-2) {};
-			\node[draw, minimum size=1cm, fill=black] at (1,-2) {};
-			\node[draw, minimum size=1cm, fill=black] at (2,-2) {};
-			
-			\draw[red, very thick] (-0.5,0.5) -- (0.5,-0.5);
-			\draw[red, very thick] (-0.5,-0.5) -- (0.5,0.5);
-		\end{tikzpicture}
-		\\[0.3cm]
-		\textbf{Glider}
-	\end{minipage}
-	\hfill
-	%Toad
-	\begin{minipage}{0.32\textwidth}
-		\centering
-		\begin{tikzpicture}
-			\foreach \y in {0,...,3} {
-				\foreach \x in {0,...,3} {
-					\node[draw, minimum size=1cm] at (\x,-\y) {};
+				\node[draw, minimum size=1cm, fill=black] at (1,0) {};
+				\node[draw, minimum size=1cm, fill=black] at (2,-1) {};
+				\node[draw, minimum size=1cm, fill=black] at (0,-2) {};
+				\node[draw, minimum size=1cm, fill=black] at (1,-2) {};
+				\node[draw, minimum size=1cm, fill=black] at (2,-2) {};
+				
+				\draw[red, very thick] (-0.5,0.5) -- (0.5,-0.5);
+				\draw[red, very thick] (-0.5,-0.5) -- (0.5,0.5);
+			\end{tikzpicture}
+			\\[0.3cm]
+			\textbf{Glider}
+		\end{minipage}
+		\hfill
+		%Toad
+		\begin{minipage}{0.32\textwidth}
+			\centering
+			\begin{tikzpicture}
+				\foreach \y in {0,...,3} {
+					\foreach \x in {0,...,3} {
+						\node[draw, minimum size=1cm] at (\x,-\y) {};
+					}
 				}
-			}
-			\node[draw, minimum size=1cm, fill=black] at (2,0) {};
-			\node[draw, minimum size=1cm, fill=black] at (0,-1) {};
-			\node[draw, minimum size=1cm, fill=black] at (0,-2) {};
-			\node[draw, minimum size=1cm, fill=black] at (1,-3) {};
-			\node[draw, minimum size=1cm, fill=black] at (3,-1) {};
-			\node[draw, minimum size=1cm, fill=black] at (3,-2) {};
-			
-			\draw[red, very thick] (-0.5,0.5) -- (0.5,-0.5);
-			\draw[red, very thick] (-0.5,-0.5) -- (0.5,0.5);
-		\end{tikzpicture}
-		\\[0.3cm]
-		\textbf{Toad}
-	\end{minipage}
-	\hfill
-	% Beacon
-	\begin{minipage}{0.32\textwidth}
-		\centering
-		\begin{tikzpicture}
-			\foreach \y in {0,...,3} {
-				\foreach \x in {0,...,3} {
-					\node[draw, minimum size=1cm] at (\x,-\y) {};
+				\node[draw, minimum size=1cm, fill=black] at (2,0) {};
+				\node[draw, minimum size=1cm, fill=black] at (0,-1) {};
+				\node[draw, minimum size=1cm, fill=black] at (0,-2) {};
+				\node[draw, minimum size=1cm, fill=black] at (1,-3) {};
+				\node[draw, minimum size=1cm, fill=black] at (3,-1) {};
+				\node[draw, minimum size=1cm, fill=black] at (3,-2) {};
+				
+				\draw[red, very thick] (-0.5,0.5) -- (0.5,-0.5);
+				\draw[red, very thick] (-0.5,-0.5) -- (0.5,0.5);
+			\end{tikzpicture}
+			\\[0.3cm]
+			\textbf{Toad}
+		\end{minipage}
+		\hfill
+		% Beacon
+		\begin{minipage}{0.32\textwidth}
+			\centering
+			\begin{tikzpicture}
+				\foreach \y in {0,...,3} {
+					\foreach \x in {0,...,3} {
+						\node[draw, minimum size=1cm] at (\x,-\y) {};
+					}
 				}
-			}
-			\node[draw, minimum size=1cm, fill=black] at (0,0) {};
-			\node[draw, minimum size=1cm, fill=black] at (1,0) {};
-			\node[draw, minimum size=1cm, fill=black] at (0,-1) {};
-			\node[draw, minimum size=1cm, fill=black] at (3,-2) {};
-			\node[draw, minimum size=1cm, fill=black] at (2,-3) {};
-			\node[draw, minimum size=1cm, fill=black] at (3,-3) {};
-			
-			\draw[red, very thick] (-0.5,0.5) -- (0.5,-0.5);
-			\draw[red, very thick] (-0.5,-0.5) -- (0.5,0.5);
-		\end{tikzpicture}
-		\\[0.3cm]
-		\textbf{Beacon}
-	\end{minipage}
-\end{center}
+				\node[draw, minimum size=1cm, fill=black] at (0,0) {};
+				\node[draw, minimum size=1cm, fill=black] at (1,0) {};
+				\node[draw, minimum size=1cm, fill=black] at (0,-1) {};
+				\node[draw, minimum size=1cm, fill=black] at (3,-2) {};
+				\node[draw, minimum size=1cm, fill=black] at (2,-3) {};
+				\node[draw, minimum size=1cm, fill=black] at (3,-3) {};
+				
+				\draw[red, very thick] (-0.5,0.5) -- (0.5,-0.5);
+				\draw[red, very thick] (-0.5,-0.5) -- (0.5,0.5);
+			\end{tikzpicture}
+			\\[0.3cm]
+			\textbf{Beacon}
+		\end{minipage}
+	\end{center}
 
-
+	\subsubsection*{Methuselah}
+	\textcolor{red}{add explanation --- work in progress (Luiz)}
+	\begin{center}
+		% Methuselah (R-Pentomino)
+		\begin{minipage}{0.32\textwidth}
+			\centering
+			\begin{tikzpicture}
+				\foreach \y in {0,...,3} {
+					\foreach \x in {0,...,3} {
+						\node[draw, minimum size=1cm] at (\x,-\y) {};
+					}
+				}
+				\node[draw, minimum size=1cm, fill=black] at (1,0) {};
+				\node[draw, minimum size=1cm, fill=black] at (2,0) {};
+				\node[draw, minimum size=1cm, fill=black] at (0,-1) {};
+				\node[draw, minimum size=1cm, fill=black] at (1,-1) {};
+				\node[draw, minimum size=1cm, fill=black] at (1,-2) {};
+				
+				\draw[red, very thick] (-0.5,0.5) -- (0.5,-0.5);
+				\draw[red, very thick] (-0.5,-0.5) -- (0.5,0.5);
+			\end{tikzpicture}
+			\\[0.3cm]
+			\textbf{Methuselah}
+		\end{minipage}
+	\end{center}
 
 \subsection*{Exercise 1.4: Optimization Level and Compilation Settings}
 \subsection*{Exercise 1.5: Simulation Time per Grid Size}
