@@ -21,7 +21,7 @@ public:
     ~World();
 
     void set(int x, int y, bool alive);
-    void get(int x, int y);
+    void get(int x, int y) const;
     void evolve();                       // Evolves and stores new state in rotation
     bool isStable() const;               // Checks for period-2 stability
     void print() const;
@@ -29,8 +29,8 @@ public:
     bool load(const std::string& path);
     bool save(const std::string& path) const;
 
-    int getRows();
-    int getCols();
+    int getRows() const;
+    int getCols() const;
 };
 
 #endif // GAME_OF_LIFE_H

@@ -10,7 +10,7 @@
 #include "World.h"
 
 Cli::Cli()
-    : printOn(false), delayTime(100), stabilityCheck(false), world(nullptr) {}
+    : printOn(true), delayTime(250), stabilityCheck(false), world(nullptr) {}
 
 Cli::~Cli() = default;
 
@@ -303,8 +303,11 @@ void Cli::run(std::string& input) {
       auto start = std::chrono::high_resolution_clock::now();
 
       for (int i = 0; i < generations; ++i) {
+        std::cout << "\x1b[3J\x1b[2J\x1b[H";
+        std::cout.flush();
         if (printOn) {
-          std::cout << "\033[2J\033[H";
+          int size = world->getCols() > world->getRows() ? world->getCols() : world->getRows();
+          std::cout << "\x1b[3J\x1b[2J\x1b[H";
           world->print();
           std::this_thread::sleep_for(std::chrono::milliseconds(delayTime));
         }

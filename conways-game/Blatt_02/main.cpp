@@ -4,6 +4,7 @@
 #include "Cli.h"
 
 int main() {
+    /*
     World world(5, 5);
 
     if (!world.load("../p67_snark_loop.txt")) {
@@ -30,6 +31,7 @@ int main() {
         std::cerr << "Failed to save to file.\n";
         return 1;
     }
+    */
     
     Cli cli{};
     cli.start();
