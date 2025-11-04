@@ -82,6 +82,11 @@ void Cli::start() {
     } else if (std::regex_match(
                    input, std::regex(R"(\s*beacon\s+[0-9]+\s+[0-9]+\s*)"))) {
       addBeacon(input);
+      // Add Methuselah pattern
+    } else if (std::regex_match(
+                   input, std::regex(R"(\s*methuselah\s+[0-9]+\s+[0-9]+\s*)"))) {
+      addMethuselah(input);
+    }
       // Base case for handling invalid commands.
     } else {
       std::cout << "\nNot sure what you mean by " << "'" << input << "'"
@@ -167,6 +172,34 @@ void Cli::addGlider(std::string& input) {
     std::cout << "CGOL> ";
   }
 }
+
+//////////////////////////////////////////////////////
+
+void Cli::addMethuselah(std::string& input) {
+  const std::regex command_methuselah(R"(\s*methuselah\s+([0-9]+)\s+([0-9]+)\s*)");
+  std::smatch match;
+
+  if (std::regex_match(input, match, command_methuselah)) {
+    int x = std::stoi(match[1]);
+    int y = std::stoi(match[2]);
+
+    if (!world) {
+      std::cout << "Error: No world created. Use 'create' or 'load' first."
+                << std::endl;
+    } else {
+      world->set(x, y + 1, true);
+      world->set(x, y + 2, true);
+      world->set(x + 1, y, true);
+      world->set(x + 1, y + 1, true);
+      world->set(x + 2, y + 1, true);
+      std::cout << "Methuselah added at (" << x << ", " << y << ")" << std::endl;
+    }
+    input = "";
+    std::cout << "CGOL> ";
+  }
+}
+
+/////////////////////////////////////////////////////
 
 void Cli::getOneD(std::string& input) {
   const std::regex command_get_1d(R"(\s*get\s+([0-9]+)\s*)");

@@ -26,6 +26,7 @@ private:
     void addBeacon(std::string& input);
     void addToad(std::string& input);
     void addGlider(std::string& input);
+    void addMethuselah(std::string& input);
 
     void getOneD(std::string& input);
     void getTwoD(std::string& input);
