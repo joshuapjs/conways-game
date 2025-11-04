@@ -20,7 +20,8 @@ public:
     World(int rows, int cols);
     ~World();
 
-    void set(int height, int width, bool alive);
+    void set(int x, int y, bool alive);
+    void get(int x, int y);
     void evolve();                       // Evolves and stores new state in rotation
     bool isStable() const;               // Checks for period-2 stability
     void print() const;

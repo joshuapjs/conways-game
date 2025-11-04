@@ -43,10 +43,16 @@ int World::countLiveNeighbors(int r, int c) const {
     return count;
 }
 
-void World::set(int height, int width, bool alive) {
-    height = height < 0 ? rows - (height % rows) : height % rows;
-    width = width < 0 ? cols - (width % cols) : width % cols;
-    grids[currentGridIndex][height][width] = alive;
+void World::set(int x, int y, bool alive) {
+    x = x < 0 ? cols - (x % cols) : x % cols;
+    y = y < 0 ? y - (y % rows) : y % rows;
+    grids[currentGridIndex][y][x] = alive;
+}
+
+void World::get(int x, int y) {
+    x = x < 0 ? cols - (x % cols) : x % cols;
+    y = y < 0 ? y - (y % rows) : y % rows;
+    grids[currentGridIndex][y][x];
 }
 
 void World::copyGrid(bool** dest, bool** src) const {
@@ -92,7 +98,8 @@ bool World::isStable() const {
 void World::print() const {
     for (int r = 0; r < rows; ++r) {
         for (int c = 0; c < cols; ++c)
-            std::cout << (grids[currentGridIndex][r][c] ? '1' : '0');
+
+            std::cout << (grids[currentGridIndex][r][c] ? "\033[1m\033[32m\u2593\u2593\033[0m\033" : "033[1m\033[90m\u2591\u2591\033[0m");
         std::cout << '\n';
     }
 }
