@@ -3,6 +3,8 @@
 \usepackage{hyperref}
 \usepackage{caption}	% for \captionof 
 \usepackage{tikz}		% for grids
+\usepackage{pgfplots}   % for plot
+\pgfplotsset{compat=1.18}
 
 \title{HPCA-PC Exercise Sheet 2 --- Group 1}
 \author{
@@ -276,5 +278,107 @@
 		run 100
 		==================================================
 	\end{verbatim}
+	
+	\subsection*{Exercise 1.4: Optimization Level and Compilation Settings}
+	
+	The \texttt{print} to console and \texttt{is\_stable} checks were disabled.  
+	The simulation ran with the file \texttt{p67\_snark\_loop.txt} for $n = 2000$ generations.
+	
+	\subsubsection*{Results}
+	
+	\begin{center}
+		\begin{tabular}{|c|c|}
+			\hline
+			\textbf{Setting} & \textbf{Time [ms]} \\
+			\hline
+			\texttt{-O0} & 73 \\
+			\texttt{-O1} & 73 \\
+			\texttt{-O2} & 74 \\
+			\texttt{-O3} & 75 \\
+			\hline
+			\texttt{Debug} & 446 \\
+			\texttt{Release} & 75 \\
+			\hline
+		\end{tabular}
+	\end{center}
+	
+	\subsubsection*{Discussion}
+	
+	Optimization levels \texttt{-O0} – \texttt{-O3} show negligible performance differences (73–75~ms).  
+	The workload likely benefits little from compiler optimizations.
+	
+	In contrast, switching from \texttt{DEBUG} (446~ms) to \texttt{RELEASE} (75~ms) greatly improves speed,  
+	as \texttt{DEBUG} mode includes extra checks and disables most optimizations.
+	
+	\subsubsection*{Conclusion}
+	
+	Optimization level has minimal effect, while compilation mode strongly influences performance.
+	
+	\subsection*{Exercise 1.5: Simulation Time per Grid Size}
+	The \texttt{print} to console functionality and \texttt{is\_stable} check were disabled.  
+	The simulation was compiled in \texttt{RELEASE} mode with optimization level \texttt{-O3}.  
+	A blank world was used with a methuselah pattern placed at coordinates $(0, 0)$.  
+	Each simulation ran for $n = 100$ generations.
+	
+	\subsubsection*{Results}
+	
+	\begin{center}
+		\begin{tabular}{|c|c|}
+			\hline
+			\textbf{Grid Size (x, y)} & \textbf{Time [ms]} \\
+			\hline
+			(10, 10) & 0 \\
+			(20, 20) & 0 \\
+			(100, 100) & 4 \\
+			(1000, 1000) & 355 \\
+			(10000, 10000) & 35514 \\
+			\hline
+		\end{tabular}
+	\end{center}
+	
+	\subsubsection*{Discussion}
+	
+	The simulation time increases rapidly with grid size.  
+	Small grids complete almost instantly, while large grids require significantly more time.  
+	This trend suggests an approximately quadratic scaling with the number of cells ($O(x \cdot y)$),  
+	as each generation updates the entire grid.
+	
+	\subsubsection*{Plot}
+	
+	\begin{center}
+		\begin{tikzpicture}
+			\begin{axis}[
+				width=0.85\textwidth,
+				height=0.5\textwidth,
+				xlabel={Grid Size (x = y)},
+				ylabel={Time [ms]},
+				title={Simulation Time vs. Grid Size},
+				grid=major,
+				ymode=log,
+				xmode=log,
+				log basis x=10,
+				log basis y=10,
+				tick label style={font=\small},
+				legend style={font=\small, at={(0.05,0.95)}, anchor=north west}
+				]
+				\addplot[
+				thick,
+				mark=*,
+				color=blue
+				] coordinates {
+					(10, 0)
+					(20, 0)
+					(100, 4)
+					(1000, 355)
+					(10000, 35514)
+				};
+				\addlegendentry{Measured Times}
+			\end{axis}
+		\end{tikzpicture}
+	\end{center}
+	
+	\noindent
+	\textit{Figure: Simulation time as a function of grid size (log–log scale).}
+	
 
 \end{document}
