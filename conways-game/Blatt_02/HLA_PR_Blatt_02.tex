@@ -1,7 +1,7 @@
 \documentclass[]{article}
 
 \usepackage{hyperref}
-
+\usepackage{caption}	% for \captionof 
 \usepackage{tikz}		% for grids
 
 \title{HPCA-PC Exercise Sheet 2 --- Group 1}
@@ -30,6 +30,16 @@
 
 \section*{Conway’s Game of Life}
 \subsection*{Exercise 1.1: Design of the Cellular Automaton}
+	\subsubsection*{Implementation}
+	Our implementation follows an object-oriented approach with two main classes: \textit{World Class} (\texttt{World.h, World.cpp}) and \textit{CLI Class} (\texttt{Cli.h, Cli.cpp}). The \textit{World Class} manages the cellular automaton's state and evolution logic and the \textit{CLI Class} handles user interaction and command parsing.
+
+	\begin{center}
+		\includegraphics[width=0.5\textwidth, height=0.9\textheight]{UML_Ex_02.png}
+		\\[0.5em]
+		\textbf{Figure 1: UML Class Diagram of Conway's Game of Life Implementation}
+	\end{center}
+	
+
 \subsection*{Exercise 1.2: Implement Conway’s Game of Life}
 \subsection*{Exercise 1.3: Implement a Command Line Interface}
 	\subsubsection*{Starting cell of multi-cell figures at the grid position (x,y)}
