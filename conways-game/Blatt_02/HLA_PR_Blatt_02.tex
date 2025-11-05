@@ -32,11 +32,55 @@
 \subsection*{Implementation}
 	Our implementation follows an object-oriented approach with two main classes: \textit{World Class} (\texttt{World.h, World.cpp}), which manages the cellular automaton's state and evolution logic, and \textit{CLI Class} (\texttt{Cli.h, Cli.cpp}), which handles user interaction and command parsing.
 
+\subsection*{File Organization}
+	Our project follows a modular C++ structure with separation of headers, implementation files and a CMake build system.
+	\begin{verbatim}
+		game-of-life/
+		|-- CMakeLists.txt              # CMake configuration
+		|-- main.cpp                    # Application entry point
+		|-- World.h                     # World class declaration
+		|-- World.cpp                   # World class implementation
+		|-- Cli.h                       # Cli class declaration
+		|-- Cli.cpp                     # Cli class implementation
+		\-- build/                      # Build directory (created)
+
+	\end{verbatim}
+
+\subsection*{Build Instructions}
+	\begin{enumerate}
+		\item \textbf{Configure project}:
+		\begin{verbatim}
+			mkdir build
+			cd build
+			cmake ..
+		\end{verbatim}
+		
+		\item \textbf{Compile}:
+		\begin{verbatim}
+			make
+		\end{verbatim}
+		
+		\item \textbf{Run}:
+		\begin{verbatim}
+			./main
+		\end{verbatim}
+		
+		\item \textbf{Testing different optimization levels}:
+		\begin{verbatim}
+			# In CMakeLists.txt, change -O3 to:
+			-O0  # No optimization (debugging)
+			-O1  # Basic optimization
+			-O2  # More optimization
+			-O3  # Aggressive optimization
+		\end{verbatim}
+	\end{enumerate}
+
 	\begin{center}
 		\includegraphics[width=0.5\textwidth, height=0.9\textheight]{UML_Ex_02.png}
 		\\[0.5em]
 		\textbf{Figure 1: UML Class Diagram of Conway's Game of Life Implementation}
 	\end{center}
+
 	
 \subsection*{Starting cell of multi-cell figures at the grid position (x,y)}
 	All multi-cell patterns use the top-left corner as their anchor point $(x,y)$, marked with a red X in the diagrams below. When placing patterns using commands like \texttt{glider 5 5}, the pattern is positioned such that its top-left cell aligns with grid coordinates $(5,5)$. The toroidal grid behavior ensures that patterns wrap around the world boundaries. For example, placing a \textit{glider} at $(width-1, height-1)$ will cause parts of the pattern to appear at the opposite edges of the grid.
@@ -145,7 +189,92 @@
 		\end{minipage}
 	\end{center}
 
-\subsection*{Exercise 1.4: Optimization Level and Compilation Settings}
-\subsection*{Exercise 1.5: Simulation Time per Grid Size}
+\subsection*{CLI Features}
+	\subsubsection*{Help System}
+	Our CLI implementation includes a comprehensive help system accessible via the \texttt{help} or \texttt{h} commands. This system provides users with complete command reference and usage guidance.
+	\\~\\
+	\textbf{Help Command Output Structure:}
+	\begin{verbatim}
+		==================================================
+		COMMAND REFERENCE
+		==================================================
+		
+		WORLD MANAGEMENT:
+		create <width> <height>    Create new world
+		load <unix-path>           Load world from file
+		save <unix-path>           Save world to file
+		
+		SIMULATION CONTROL:
+		run <generations>          Run simulation
+		print <0|1>                Toggle live display
+		delay <milliseconds>       Delay between generations
+		stability <0|1>            Auto-stop when stable
+		
+		CELL OPERATIONS:
+		set <x> <y> <0|1>          Set cell state
+		set <position> <0|1>       Set cell by 1D index
+		get <x> <y>                Get cell state
+		get <position>             Get cell by 1D index
+		
+		PATTERNS:
+		glider <x> <y>             Add glider pattern
+		toad <x> <y>               Add toad pattern
+		beacon <x> <y>             Add beacon pattern
+		methuselah <x> <y>         Add methuselah pattern
+		random <count>             Add random patterns
+		
+		APPLICATION:
+		help, h                    Command reference
+		example, ex                Usage examples
+		quit, q, exit, :q          Exit program
+		==================================================
+	\end{verbatim}
+	
+	\pagebreak
+	
+	\subsubsection*{Examples System}
+	The \texttt{examples} or \texttt{ex} command provides practical usage scenarios to help users understand how to combine commands effectively.
+	\\~\\
+	\textbf{Examples Command Output Structure:}
+	\begin{verbatim}
+		==================================================
+		USAGE EXAMPLES
+		==================================================
+		
+		EXAMPLE 1: Basic simulation with visualization
+		create 30 30       # Create 30x30 world
+		glider 5 5         # Add a glider
+		toad 15 10         # Add a toad oscillator
+		print 1            # Enable live display
+		delay 100          # 100ms between frames
+		run 50             # Run 50 generations
+		
+		EXAMPLE 2: Fast simulation with stability check
+		create 40 40
+		random 8           # Add 8 random patterns
+		print 0            # Disable display for speed
+		stability 1        # Stop when world becomes stable
+		run 1000           # Run up to 1000 generations
+		
+		EXAMPLE 3: Manual cell creation
+		create 20 20
+		set 5 5 1          # Create custom pattern
+		set 6 6 1
+		set 7 5 1
+		set 7 6 1
+		set 7 7 1
+		print 1
+		run 20
+		
+		EXAMPLE 4: Save and load workflow
+		create 25 25
+		glider 0 0
+		beacon 10 10
+		save my_pattern.txt
+		# ... later ...
+		load my_pattern.txt
+		run 100
+		==================================================
+	\end{verbatim}
 
 \end{document}
