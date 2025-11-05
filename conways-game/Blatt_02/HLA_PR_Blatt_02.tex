@@ -69,7 +69,7 @@
 		
 		\item \textbf{Testing different optimization levels}:
 		\begin{verbatim}
-			# In CMakeLists.txt, change -O3 to:
+			cmake -DCMAKE_CXX_FLAGS="-O2" ..
 			-O0  # No optimization (debugging)
 			-O1  # Basic optimization
 			-O2  # More optimization
