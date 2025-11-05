@@ -29,9 +29,8 @@
 \maketitle
 
 \section*{Conway’s Game of Life}
-\subsection*{Exercise 1.1: Design of the Cellular Automaton}
-	\subsubsection*{Implementation}
-	Our implementation follows an object-oriented approach with two main classes: \textit{World Class} (\texttt{World.h, World.cpp}) and \textit{CLI Class} (\texttt{Cli.h, Cli.cpp}). The \textit{World Class} manages the cellular automaton's state and evolution logic and the \textit{CLI Class} handles user interaction and command parsing.
+\subsection*{Implementation}
+	Our implementation follows an object-oriented approach with two main classes: \textit{World Class} (\texttt{World.h, World.cpp}), which manages the cellular automaton's state and evolution logic, and \textit{CLI Class} (\texttt{Cli.h, Cli.cpp}), which handles user interaction and command parsing.
 
 	\begin{center}
 		\includegraphics[width=0.5\textwidth, height=0.9\textheight]{UML_Ex_02.png}
@@ -39,10 +38,7 @@
 		\textbf{Figure 1: UML Class Diagram of Conway's Game of Life Implementation}
 	\end{center}
 	
-
-\subsection*{Exercise 1.2: Implement Conway’s Game of Life}
-\subsection*{Exercise 1.3: Implement a Command Line Interface}
-	\subsubsection*{Starting cell of multi-cell figures at the grid position (x,y)}
+\subsection*{Starting cell of multi-cell figures at the grid position (x,y)}
 	All multi-cell patterns use the top-left corner as their anchor point $(x,y)$, marked with a red X in the diagrams below. When placing patterns using commands like \texttt{glider 5 5}, the pattern is positioned such that its top-left cell aligns with grid coordinates $(5,5)$. The toroidal grid behavior ensures that patterns wrap around the world boundaries. For example, placing a \textit{glider} at $(width-1, height-1)$ will cause parts of the pattern to appear at the opposite edges of the grid.
 
 	\begin{center}
@@ -65,7 +61,7 @@
 				\draw[red, very thick] (-0.5,-0.5) -- (0.5,0.5);
 			\end{tikzpicture}
 			\\[0.3cm]
-			\textbf{Glider}
+			\textbf{Figure 2: Glider}
 		\end{minipage}
 		\hfill
 		%Toad
@@ -88,7 +84,7 @@
 				\draw[red, very thick] (-0.5,-0.5) -- (0.5,0.5);
 			\end{tikzpicture}
 			\\[0.3cm]
-			\textbf{Toad}
+			\textbf{Figure 3: Toad}
 		\end{minipage}
 		\hfill
 		% Beacon
@@ -111,12 +107,20 @@
 				\draw[red, very thick] (-0.5,-0.5) -- (0.5,0.5);
 			\end{tikzpicture}
 			\\[0.3cm]
-			\textbf{Beacon}
+			\textbf{Figure 4: Beacon}
 		\end{minipage}
 	\end{center}
 
-	\subsubsection*{Methuselah}
-	\textcolor{red}{add explanation --- work in progress (Luiz)}
+\subsection*{Methuselah}
+	We chose one of the smallest methuselahs, the \textbf{R-pentomino}, as our pattern. A small configuration (only 5 cells) that takes over 1,100 generations to stabilize. The anchor point (red X) marks the top-left position $(x,y)$ where the pattern is placed.
+	
+	\begin{itemize}
+		\item \textbf{Pattern}: R-pentomino
+		\item \textbf{Cells}: 5 live cells in 3×3 bounding box
+		\item \textbf{Evolution}: Complex long-term behavior (1,103 generations)
+		\item \textbf{Anchor}: Top-left corner at command coordinates
+	\end{itemize}
+	
 	\begin{center}
 		% Methuselah (R-Pentomino)
 		\begin{minipage}{0.32\textwidth}
@@ -137,7 +141,7 @@
 				\draw[red, very thick] (-0.5,-0.5) -- (0.5,0.5);
 			\end{tikzpicture}
 			\\[0.3cm]
-			\textbf{Methuselah}
+			\textbf{Figure 5: Methuselah}
 		\end{minipage}
 	\end{center}
 
